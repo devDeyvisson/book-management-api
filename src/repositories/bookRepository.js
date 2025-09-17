@@ -1,34 +1,31 @@
 const db = require("../database/memoryDataBase");
 
-function createBook(title, author, year, genre) {
-  let newBook = {
-    id: Date.now().toString(),
-    title: title,
-    author: author,
-    year: year,
-    genre: genre,
-  };
+function createBook(book) {
+  db.books.push(book);
 
-  db.books.push(newBook);
-
-  return newBook;
+  return book;
 }
 
 function getAllBooks() {
   return db.books;
 }
 
-function updateBookById(id, title, author, year, genre) {
+function updateBookById(id, book) {
   let index = db.books.findIndex((book) => book.id == id);
 
-  if (index === -1) return false;
+  if (index === -1) return null;
 
-  db.books[index].title = title || db.books[index].title;
-  db.books[index].author = author || db.books[index].author;
-  db.books[index].year = year || db.books[index].year;
-  db.books[index].genre = genre || db.books[index].genre;
+  db.books[index] = book;
 
-  return db.books[index];
+  return book;
+}
+
+function findById(id) {
+  const bookFound = db.books.find((book) => book.id == id);
+
+  if (!bookFound) return null;
+
+  return bookFound;
 }
 
 function deleteBookById(id) {
@@ -80,4 +77,5 @@ module.exports = {
   getBookByAuthor,
   getBookByYear,
   getBookByGenre,
+  findById,
 };

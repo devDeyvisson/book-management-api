@@ -1,5 +1,5 @@
-let listBooks = [];
+let bookList = [];
 
 module.exports = {
-  books: listBooks,
+  books: bookList,
 };

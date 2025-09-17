@@ -7,10 +7,19 @@ const {
   getBookByAuthor,
   getBookByYear,
   getBookByGenre,
+  findById,
 } = require("../repositories/bookRepository");
 
 function createBookService(title, author, year, genre) {
-  return createBook(title, author, year, genre);
+  let newBook = {
+    id: Date.now().toString(),
+    title: title,
+    author: author,
+    year: year,
+    genre: genre,
+  };
+
+  return createBook(newBook);
 }
 
 function getAllBooksService() {
@@ -18,7 +27,16 @@ function getAllBooksService() {
 }
 
 function updateBookByIdService(id, title, author, year, genre) {
-  return updateBookById(id, title, author, year, genre);
+  let bookFound = findById(id);
+
+  if (!bookFound) return null;
+
+  bookFound.title = title || bookFound.title;
+  bookFound.author = author || bookFound.author;
+  bookFound.year = year || bookFound.year;
+  bookFound.genre = genre || bookFound.genre;
+
+  return updateBookById(id, bookFound);
 }
 
 function deleteBookByIdService(id) {
